@@ -1,9 +1,35 @@
-import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 
 const AuthForm = ({ isLogin }) => {
+  const handleAuth = async (values, { setSubmitting }) => {
+    if (isLogin) {
+      // Handle login submission
+      const res = await fetch(`${import.meta.env.VITE_API_URL}auth/login`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      console.log("Login data:", values, data);
+    } else {
+      // Handle registration submission
+      const res = await fetch(`${import.meta.env.VITE_API_URL}auth/register`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await res.json();
+      console.log("Register data:", values,data);
+    }
+    setSubmitting(false);
+  };
+
   // Validation schemas
   const loginValidationSchema = Yup.object({
     email: Yup.string()
@@ -23,8 +49,8 @@ const AuthForm = ({ isLogin }) => {
   });
 
   return (
-    <section className="max-w-5xl mx-auto">
-      <div className="w-[450px] mx-auto rounded-md shadow-lg bg-red-300 p-4">
+    <section className="max-w-5xl mx-auto my-4">
+      <div className="w-[450px] mx-auto rounded-md shadow-lg bg-red-100 p-4">
         <h2 className="text-center text-2xl mb-4">
           {isLogin ? "Login Page" : "Register Page"}
         </h2>
@@ -38,16 +64,7 @@ const AuthForm = ({ isLogin }) => {
           validationSchema={
             isLogin ? loginValidationSchema : registerValidationSchema
           }
-          onSubmit={(values, { setSubmitting }) => {
-            if (isLogin) {
-              // Handle login submission
-              console.log("Login data:", values);
-            } else {
-              // Handle registration submission
-              console.log("Register data:", values);
-            }
-            setSubmitting(false);
-          }}
+          onSubmit={handleAuth}
         >
           {({ isSubmitting }) => (
             <Form className="flex flex-col gap-4">
@@ -104,7 +121,7 @@ const AuthForm = ({ isLogin }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-4 bg-blue-500 text-white p-2 rounded"
+                className="mt-4 bg-green-500 text-white p-2 rounded"
               >
                 {isLogin ? "Login" : "Register"}
               </button>
@@ -116,7 +133,7 @@ const AuthForm = ({ isLogin }) => {
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <Link
             to={isLogin ? "/register" : "/login"}
-            className="text-blue-500 underline"
+            className="text-green-500 underline"
           >
             {isLogin ? "Register" : "Login"}
           </Link>
