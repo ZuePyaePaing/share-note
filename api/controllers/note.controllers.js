@@ -24,8 +24,8 @@ exports.createNote = async (req, res, next) => {
     });
   }
   try {
-    const { title, description, image } = req.body;
-    await Note.create({ title, description, image });
+    const { title, description } = req.body;
+    await Note.create({ title, description  });
     return res.status(201).json({
       isSuccess: true,
       message: "Created note successfuly",

@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-
 const nodeSchema = new Schema(
   {
     title: {
@@ -14,7 +13,7 @@ const nodeSchema = new Schema(
       required: true,
       minlength: [15, "Title must be at least 15 characters long"],
     },
-    image: { type: String, required: true },
+
     author: { type: String, default: "Anyoumnet" },
   },
   { timestamps: true }
