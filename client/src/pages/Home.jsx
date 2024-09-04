@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Note from "../components/Note";
-import { Circles } from "react-loader-spinner";
+import Loading from "../components/Loading";
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
@@ -9,7 +9,6 @@ const Home = () => {
   const getNotes = async () => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/notes`);
     const data = await response.json();
-    console.log(data);
     setNotes(data.notes);
     setLoading(false);
   };
@@ -19,18 +18,7 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className=" flex items-center justify-center w-full h-screen">
-        <Circles
-          height={50}
-          width={50}
-          color="#FCA5A5"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-         />
-      </div>
-    );
+    return <Loading />;
   }
   return (
     <section className="  max-w-6xl mx-auto mt-5">

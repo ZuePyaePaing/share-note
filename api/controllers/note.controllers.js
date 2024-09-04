@@ -25,7 +25,7 @@ exports.createNote = async (req, res, next) => {
   }
   try {
     const { title, description } = req.body;
-    await Note.create({ title, description  });
+    await Note.create({ title, description });
     return res.status(201).json({
       isSuccess: true,
       message: "Created note successfuly",
@@ -69,5 +69,13 @@ exports.getSingleNote = async (req, res, next) => {
 };
 
 exports.editNote = async (req, res, next) => {
-  
+  try {
+    const {} = req.body;
+  } catch (error) {
+    return res.status(500).json({
+      isSuccess: false,
+      message: "Error in Edit Note",
+      error: error.message,
+    });
+  }
 };

@@ -5,7 +5,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import EditNoteForm from "./pages/EditNoteForm";
 import CreateNoteFrom from "./pages/CreateNoteFrom";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import DetailNote from "./pages/DetailNote";
 const App = () => {
   return (
     <>
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/create" element={<CreateNoteFrom />} />
         <Route path="/edit/:id" element={<EditNoteForm />} />
+        <Route path="/detail/:id" element={<DetailNote />} />
       </Routes>
       <Toaster
         position="top-center"

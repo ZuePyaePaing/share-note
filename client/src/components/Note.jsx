@@ -5,9 +5,9 @@ import {
   CalendarDaysIcon,
 } from "@heroicons/react/24/outline";
 import { formatISO9075 } from "date-fns";
+import { Link } from "react-router-dom";
 
-const Note = ({ title, description, createdAt }) => {
-  
+const Note = ({ _id, title, description, createdAt }) => {
   return (
     <div className=" flex flex-col justify-between p-4 rounded-md shadow-md md:w-[340px] w-[300px] h-[200px] ">
       <h1 className=" font-roboto font-bold text-xl mb-1">{title}</h1>
@@ -23,9 +23,15 @@ const Note = ({ title, description, createdAt }) => {
           </p>
         </div>
         <div className=" flex items-center gap-x-2">
-          <TrashIcon className="h-4 w-5 text-red-500 cursor-pointer" />
-          <PencilSquareIcon className="h-4 w-5 text-teal-600 cursor-pointer" />
-          <EyeIcon className="h-4 w-5 cursor-pointer" />
+          <Link to={`/delete/${_id}`}>
+            <TrashIcon className="h-4 w-5 text-red-500 cursor-pointer" />
+          </Link>
+          <Link to={`/edit/${_id}`}>
+            <PencilSquareIcon className="h-4 w-5 text-teal-600 cursor-pointer" />
+          </Link>
+          <Link to={`/detail/${_id}`}>
+            <EyeIcon className="h-4 w-5 cursor-pointer" />
+          </Link>
         </div>
       </div>
     </div>
