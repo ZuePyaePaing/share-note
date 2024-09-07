@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const path = require("path");
 const Note = require("../models/noteSchema");
 
 exports.getNotes = async (req, res, next) => {
@@ -25,7 +26,14 @@ exports.createNote = async (req, res, next) => {
   }
   try {
     const { title, description } = req.body;
-    await Note.create({ title, description });
+    let cover_image = null;
+    if (req.file) {
+      cover_image = path.relative(__dirname, req.file.path);
+      cover_image = cover_image.replace(/\\/g, "/");
+      cover_image = cover_image.split("uploads/").pop();
+      cover_image = "uploads/" + cover_image;
+    }
+    await Note.create({ title, description, cover_image });
     return res.status(201).json({
       isSuccess: true,
       message: "Created note successfuly",
@@ -75,6 +83,20 @@ exports.editNote = async (req, res, next) => {
     return res.status(500).json({
       isSuccess: false,
       message: "Error in Edit Note",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteNote = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+    await Note.findByIdAndDelete(noteId);
+    return res.status(204);
+  } catch (error) {
+    return res.status(500).json({
+      isSuccess: false,
+      message: "Errro in Edit Note",
       error: error.message,
     });
   }

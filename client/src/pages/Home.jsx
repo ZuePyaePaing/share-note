@@ -24,7 +24,7 @@ const Home = () => {
     <section className="  max-w-6xl mx-auto mt-5">
       <div className=" flex items-center gap-4 justify-center flex-wrap">
         {notes?.map((note) => {
-          return <Note key={note._id} {...note} />;
+          return <Note key={note._id} {...note} getNotes={getNotes} />;
         })}
       </div>
     </section>

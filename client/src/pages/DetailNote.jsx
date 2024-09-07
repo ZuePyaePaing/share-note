@@ -36,7 +36,13 @@ const DetailNote = () => {
           <ArrowLeftIcon className=" w-5 h-5" />
         </Link>
       </div>
-      {note.cover_image && <img src={note.cover_image} title={note.title}/>}
+      {note.cover_image && (
+        <img
+        className=" w-full h-[300px] object-center"
+          src={`${import.meta.env.VITE_API_URL}/${note.cover_image}`}
+          title={note.title}
+        />
+      )}
       <p className=" font-mono font-normal text-[16px]">{note.description}</p>
       <div className=" flex items-center gap-x-2">
         <div className="flex items-center gap-x-2">

@@ -24,4 +24,6 @@ routes.post(
 );
 //Get Single Note
 routes.get("/notes/:noteId", noteControllers.getSingleNote);
+//Delete Note
+routes.delete("/delete/:noteId", noteControllers.deleteNote);
 module.exports = routes;

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Formik } from "formik";
+import { Form, Formik, ErrorMessage } from "formik";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import InputField from "./InputField ";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ const NoteForm = ({ create }) => {
   const fileInputRef = useRef();
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
+
   // Define validation schema
   const noteSchema = Yup.object().shape({
     title: Yup.string()
@@ -18,13 +19,29 @@ const NoteForm = ({ create }) => {
     description: Yup.string()
       .min(10, "Description must be at least 10 characters")
       .required("Description is required"),
+    cover_image: Yup.mixed()
+      .test("fileSize", "File too large", (value) => {
+        return value && value.size <= 10 * 1024 * 1024;
+      })
+      .test("fileType", "Unsupported file format", (value) => {
+        return (
+          value && ["image/jpg", "image/jpeg", "image/png"].includes(value.type)
+        );
+      }),
   });
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, setFieldValue) => {
     const file = e.target.files[0];
     const imageUrl = URL.createObjectURL(file);
     setImage(imageUrl);
+    setFieldValue("cover_image", file);
   };
   const handleSubmit = async (values) => {
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    if (values.cover_image instanceof File) {
+      formData.append("cover_image", values.cover_image);
+    }
     const url = create
       ? `${import.meta.env.VITE_API_URL}/create`
       : `${import.meta.env.VITE_API_URL}/edit`;
@@ -32,8 +49,7 @@ const NoteForm = ({ create }) => {
     try {
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: formData,
       });
       const data = await response.json();
       navigate("/");
@@ -55,12 +71,12 @@ const NoteForm = ({ create }) => {
           validationSchema={noteSchema}
           onSubmit={handleSubmit}
         >
-          {({ setInitialValues }) => (
+          {({ setFieldValue }) => (
             <Form className="flex flex-col gap-4">
-              <InputField lable={"title"} name={"title"} type="text" />
+              <InputField label="Title" name="title" type="text" />
               <InputField
-                lable={"description"}
-                name={"description"}
+                label="Description"
+                name="description"
                 component="textarea"
               />
               <div>
@@ -68,7 +84,7 @@ const NoteForm = ({ create }) => {
                   type="file"
                   name="cover_image"
                   ref={fileInputRef}
-                  onChange={handleFileChange}
+                  onChange={(e) => handleFileChange(e, setFieldValue)}
                   hidden
                 />
                 <button
@@ -91,6 +107,7 @@ const NoteForm = ({ create }) => {
                   )}
                   <ArrowUpTrayIcon className="w-6 h-6 text-red-500 z-20" />
                 </div>
+                <ErrorMessage name="cover_image" />
               </div>
 
               <button
