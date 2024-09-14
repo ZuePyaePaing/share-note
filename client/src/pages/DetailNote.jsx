@@ -38,7 +38,7 @@ const DetailNote = () => {
       </div>
       {note.cover_image && (
         <img
-        className=" w-full h-[300px] object-center"
+        className=" w-full h-[500px] object-cover"
           src={`${import.meta.env.VITE_API_URL}/${note.cover_image}`}
           title={note.title}
         />

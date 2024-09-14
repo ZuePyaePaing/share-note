@@ -8,14 +8,15 @@ import { formatISO9075 } from "date-fns";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-const Note = ({ _id, title, description, createdAt }) => {
-  const deletHandler = async (noteId) => {
+const Note = ({ _id, title, description, createdAt, getNotes }) => {
+  const deleteHandler = async (noteId) => {
     const responce = await fetch(
       `${import.meta.env.VITE_API_URL}/delete/${noteId}`,
       {
         method: "delete",
       }
     );
+    getNotes();
     toast.success("Note is deleted");
   };
 
@@ -36,12 +37,14 @@ const Note = ({ _id, title, description, createdAt }) => {
         <div className=" flex items-center gap-x-2">
           <TrashIcon
             className="h-4 w-5 text-red-500 cursor-pointer"
-            onClick={() => deletHandler(_id)}
+            onClick={() => deleteHandler(_id)}
           />
 
           <Link to={`/edit/${_id}`}>
+            {" "}
             <PencilSquareIcon className="h-4 w-5 text-teal-600 cursor-pointer" />
           </Link>
+
           <Link to={`/detail/${_id}`}>
             <EyeIcon className="h-4 w-5 cursor-pointer" />
           </Link>

@@ -123,7 +123,7 @@ const AuthForm = ({ isLogin }) => {
                 disabled={isSubmitting}
                 className="mt-4 bg-green-500 text-white p-2 rounded"
               >
-                {isLogin ? "Login" : "Register"}
+                {isLogin ? `${isSubmitting?'Submitting...':"Login"}` :`${isSubmitting?'Submitting...':"Register"}` }
               </button>
             </Form>
           )}

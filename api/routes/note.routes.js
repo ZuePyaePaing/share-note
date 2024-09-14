@@ -24,6 +24,10 @@ routes.post(
 );
 //Get Single Note
 routes.get("/notes/:noteId", noteControllers.getSingleNote);
+//Get Old Note
+routes.get("/edit/:noteId", noteControllers.getOldNote);
+//Update Note
+routes.put("/edit", noteControllers.editNote);
 //Delete Note
 routes.delete("/delete/:noteId", noteControllers.deleteNote);
 module.exports = routes;

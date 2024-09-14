@@ -46,15 +46,16 @@ const fileFilterConfigure = (req, file, cb) => {
 const upload = multer({
   storage: storageConfigure,
   fileFilter: fileFilterConfigure,
-  limits: { fileSize: 1024 * 1024 * 5 },
+  limits: { fileSize: 10 * 1024 * 1024 },
 });
 
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
 // Initialize Multer
-app.use(upload.single("cover_image"));
 app.use("/uploads", express.static(uploadDir));
+app.use(upload.single("cover_image"));
+
 // Routes
 app.use("/auth", authRoutes);
 app.use(noteRoutes);

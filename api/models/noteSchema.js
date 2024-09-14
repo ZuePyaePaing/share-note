@@ -13,7 +13,7 @@ const nodeSchema = new Schema(
       required: true,
       minlength: [15, "Title must be at least 15 characters long"],
     },
-    cover_image: { type: String },
+    cover_image: { type: String ,},
     author: { type: String, default: "Anyoumnet" },
   },
   { timestamps: true }
